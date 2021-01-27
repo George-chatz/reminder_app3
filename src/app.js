@@ -1,6 +1,10 @@
-const inquirer = require ('inquirer')
-const {addUnits} = require('../utils/army.js')
+const inquirer = require ('inquirer');
+const {addUnits} = require('../utils/army.js');
+const {Army} = require('../utils/armydb.js')
+require('./db/connection.js');
+
 let sizeR=0;
+
 const main = () => {
     app();
 }
@@ -30,6 +34,9 @@ const app = async () => {
             if(type.options == "Meele"){
                 const selected = await inquirer.prompt(unitsRomeMeele);
                 addUnits(selected);
+                const armyR = new Army({selected})
+                await armyR.save();
+                console.log(armyR);
             }else if (type.options == "Ranged"){
                 const selected = await inquirer.prompt(unitsRomeRanged)
                 addUnits(selected);
@@ -45,3 +52,6 @@ const app = async () => {
     app();
 }
 main();
+
+
+
